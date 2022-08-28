@@ -1,24 +1,26 @@
 const data1 = require("./data1.json");
 const data2 = require("./data2.json");
-const dataArrays = [data1, data2];
-const dataArrays2 = [data1.data, data2.data];
+const dataArrays = [ data1, data2];
+const dataArrays2 = [ data2, data1];
 const fs = require("fs");
 let test = false;
 // console.log(dataArrays);
 // const newArrs = [];
 
 const tracker = [];
-const marges = [];
 
-const stracuteChange = dataArrays.reduce((acc, cur, idx, arr) => {
+const stracuteChange = dataArrays2.reduce((acc, cur, idx) => {
   let newAcc = {};
   for (const id of Object.keys(cur.data)) {
     if (tracker.indexOf(id) === -1) {
       tracker.push(id);
       tracker.push(idx);
+      // console.log(id)
       newAcc = { ...cur, data: { ...cur.data, [id]: cur.data[id] } };
     } else {
       const checkIndex = tracker[tracker.indexOf(id) + 1];
+
+      // console.log(id);
       const anotherAcc = [...acc];
 
       anotherAcc[checkIndex] = {
@@ -36,19 +38,6 @@ const stracuteChange = dataArrays.reduce((acc, cur, idx, arr) => {
         // anotherAcc[checkIndex].data[id].messages=
       }; //message concat
       acc = anotherAcc;
-
-      // anotherAcc[id] = {
-      //   ...anotherAcc[id],
-      //   data: {
-      //     ...anotherAcc[id].data,
-      //     [id]: {
-      //       ...anotherAcc[id].data[id],
-      //       messages: [],
-      //     },
-      //   },
-      // };
-      // console.log(acc[id]);
-      //   console.log(Object.keys(anotherAcc[checkIndex].data[id].messages).length);
     } //else
   }
   acc = [...acc, newAcc];
@@ -59,8 +48,9 @@ const stracuteChange = dataArrays.reduce((acc, cur, idx, arr) => {
 // if (test === false) {
 //   console.log(test);
 
-// fs.writeFile(
+// const write = ()=>fs.writeFile(
 //   `books${Math.random().toString()}.json`,
 //   JSON.stringify(stracuteChange),
 //   (err) => {}
 // );
+// setTimeout(()=>write(), 2000)
